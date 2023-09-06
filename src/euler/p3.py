@@ -1,27 +1,36 @@
-"""Euler project problem 3"""
+"""Euler project problem 3
+
+One can reduce the problem of finding the primes of
+a quotient and the primes of the divisor::
+
+    primes(100) = [2] + primes(50)
+                = [2, 2] + primes(25)
+                = [2, 2, 5] + primes(5)
+                = [2, 2, 5, 5]
+"""
 
 
-def find(n):  # Find the largest prime factor of n
-    from math import sqrt
-
-    def isprime(x):
-        i = 2
-        while i < int(sqrt(x)):
-            if x % i == 0:
-                return False
-            i += 1
-        return True
-
-    factors, i = [1], 2
-    while i < int(sqrt(n)):
-        if n % i == 0 and isprime(i):
-            factors.append(i)
-        i += 1
-    return max(factors)
+def find(n):
+    tester = 2
+    while tester * tester <= n:
+        if n % tester == 0:
+            n //= tester
+            continue
+        tester += 1
+    return n
 
 
 def main() -> None:
     print(find(600851475143))
+
+
+def test_small():
+    assert find(1) == 1
+    assert find(10) == 5
+    assert find(17) == 17
+    assert find(25) == 5
+    assert find(100) == 5
+    assert find(600851475143) == 6857
 
 
 if __name__ == "__main__":
